@@ -17,7 +17,7 @@ public:
     virtual bool isDone() = 0;
     State *getNextState() { return this->nextState; }
     State(Peripherials* peripherials, Settings* settings);
-    virtual ~State() = default;
+    virtual ~State() {};
 };
 
 #endif

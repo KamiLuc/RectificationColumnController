@@ -18,6 +18,7 @@ public:
     SettingsChangeState(Peripherials* peripherials, Settings* settings);
     bool isDone();
     void update();
+    virtual ~SettingsChangeState() = default;
 };
 
 #endif

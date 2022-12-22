@@ -19,6 +19,7 @@ public:
     WorkModeChooseState(Peripherials* peripherials, Settings* settings);
     bool isDone();
     void update();
+    virtual ~WorkModeChooseState() = default;
 };
 
 #endif
