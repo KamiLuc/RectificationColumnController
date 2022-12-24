@@ -1,8 +1,8 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "Peripherials.h"
-#include "Utils.h"
+#include "Utils/Settings.h"
+#include "Utils/Peripherials.h"
 
 class State
 {

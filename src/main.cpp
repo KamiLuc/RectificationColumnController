@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include "LiquidCrystal.h"
-#include "Button.h"
 #include "Controller.h"
 
 void setup()

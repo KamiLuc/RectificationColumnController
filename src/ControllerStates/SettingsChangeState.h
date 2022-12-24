@@ -4,7 +4,7 @@
 #include "SettingsEdit/MaxTemperatureEditor.h"
 #include "SettingsEdit/StabilizationTimeEditor.h"
 #include "SettingsEdit/SkipSlotSensorTimeEditor.h"
-#include "State.h"
+#include "ControllerStates/State.h"
 
 class SettingsChangeState : public State
 {

@@ -1,8 +1,8 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "State.h"
-#include "Peripherials.h"
+#include "ControllerStates/State.h"
+#include "Utils/Peripherials.h"
 
 class Controller {
 private:

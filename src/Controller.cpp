@@ -1,5 +1,5 @@
 #include "Controller.h"
-#include "WorkModeChooseState.h"
+#include "ControllerStates/WorkModeChooseState.h"
 
 Controller::Controller() :
     peripherials(Button(0), Button(1), Button(2), Button(3), LiquidCrystal(A0, A1, A2, A3, A4, A5))

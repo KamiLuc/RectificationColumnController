@@ -1,20 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
-
-enum WorkMode
-{
-    TEMPERATURE_SENSOR_ONLY,
-    SLOT_SENSOR_ONLY,
-    FULL_EQUIPMENT
-};
-
-struct Settings
-{
-    WorkMode workMode = FULL_EQUIPMENT;
-    float maxTemperature = 79.0f;
-    uint32_t stabilziationTime = (600000); //10 min
-    uint32_t skipSlotSensorTime = (300000); //5min
-};
+#ifndef __SETTINGPARAMS_H__
+#define __SETTINGPARAMS_H__
 
 template<typename T>
 struct SettingParams
@@ -38,4 +23,3 @@ inline SettingParams<T>::SettingParams(T minValue, T maxValue, T smallStep, T bi
 }
 
 #endif
-

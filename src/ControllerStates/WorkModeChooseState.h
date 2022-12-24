@@ -2,9 +2,8 @@
 #define WORKMODECHOOSESTATE_H
 
 #include "State.h"
-#include "Peripherials.h"
+#include "Utils/Peripherials.h"
 #include "WorkModeChooseState.h"
-#include "Utils.h"
 
 class WorkModeChooseState : public State
 {

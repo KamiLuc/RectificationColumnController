@@ -1,9 +1,10 @@
 #ifndef CONTROLLERSETTINGEDITOR_H
 #define CONTROLLERSETTINGEDITOR_H
 
-#include "Peripherials.h"
+#include "Utils/Peripherials.h"
 #include "QueueableEditor.h"
-#include "Utils.h"
+#include "Utils/Settings.h"
+#include "Utils/SettingParams.h"
 
 template<typename T>
 class ControllerSettingEditor : public QueueableEditor
