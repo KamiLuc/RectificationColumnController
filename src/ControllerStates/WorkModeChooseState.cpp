@@ -4,10 +4,6 @@
 WorkModeChooseState::WorkModeChooseState(Peripherials* peripherials, Settings* settings) : 
     State(peripherials, settings),  currentIndex(0), possibleOptions({"Temp + Slot", "Temperature only", "Slot only"})
 {
-    this->peripherials->lcd.clear();
-    this->peripherials->lcd.setCursor(0,0);
-    this->peripherials->lcd.print("Work mode:");
-    this->displayNewOption();
 }
 
 bool WorkModeChooseState::isDone()
@@ -36,6 +32,9 @@ void WorkModeChooseState::update()
 void WorkModeChooseState::onEnter()
 {
     this->peripherials->lcd.clear();
+    this->peripherials->lcd.setCursor(0,0);
+    this->peripherials->lcd.print("Work mode:");
+    this->displayNewOption();
 }
 
 void WorkModeChooseState::moveIndexUp()

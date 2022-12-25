@@ -1,4 +1,5 @@
 #include "SettingsChangeState.h"
+#include "DistillationState.h"
 
 void SettingsChangeState::setSettingsQueue()
 {
@@ -30,7 +31,7 @@ SettingsChangeState::SettingsChangeState(Peripherials *peripherials, Settings *s
 
 bool SettingsChangeState::isDone()
 {
-    return this->done;
+    return (this->nextState != nullptr);
 }
 
 void SettingsChangeState::update()
@@ -40,7 +41,7 @@ void SettingsChangeState::update()
         this->currentEditor = this->currentEditor->getNextEditor();
         if (this->currentEditor == nullptr)
         {
-            this->done = true;
+            this->nextState = new DisttilationState(this->peripherials, this->settings);
             return;
         }
         else
@@ -56,5 +57,26 @@ void SettingsChangeState::update()
 
 void SettingsChangeState::onEnter()
 {
-    this->peripherials->lcd.clear();
+}
+
+void DisttilationState::update()
+{
+    if (canReadTemperature())
+    {
+        auto temp = 0;
+        if (temp < this->settings->maxTemperature)
+        {
+            //do stabilizacji
+        } 
+    }
+
+    if (this->peripherials->slotSensor.isHigh())
+    {
+        //stabilizacja
+    }
+    else if (this->peripherials->menuButton.scanForFallingEdge())
+    {
+        this->peripherials->valveRelay.setHigh();
+        this->nextState = new SettingsChangeState(this->peripherials, this->settings);
+    }
 }
