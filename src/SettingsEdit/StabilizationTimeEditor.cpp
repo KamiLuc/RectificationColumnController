@@ -8,7 +8,7 @@ void StabilizationTimeEditor::printUpdatedValue()
     this->peripherials->lcd.print(" Min ");
 }
 
-StabilizationTimeEditor::StabilizationTimeEditor(Peripherials *Peripherials, Settings *settings, SettingParams<uint32_t> settingParams):
+StabilizationTimeEditor::StabilizationTimeEditor(Peripherials *Peripherials, Settings *settings, SettingParams<int32_t> settingParams):
  ControllerSettingEditor(Peripherials, settings, settingParams)
 {
 }
@@ -29,11 +29,12 @@ void StabilizationTimeEditor::editSetting()
     }
     else if (this->peripherials->downButton.scanForFallingEdge())
     {
-        if(this->settings->stabilziationTime - this->settingParams.currentStep >= this->settingParams.minValue)
+        this->settings->stabilziationTime -= this->settingParams.currentStep;
+        if (this->settings->stabilziationTime < this->settingParams.minValue)
         {
-            this->settings->stabilziationTime -= this->settingParams.currentStep;
-            this->printUpdatedValue();
+            this->settings->stabilziationTime = this->settingParams.minValue;
         }
+        this->printUpdatedValue();
     }
     else if(this->peripherials->okButton.scanForFallingEdge())
     {

@@ -8,7 +8,7 @@ void SkipSlotSensorTimeEditor::printUpdatedValue()
     this->peripherials->lcd.print(" Sec ");
 }
 
-SkipSlotSensorTimeEditor::SkipSlotSensorTimeEditor(Peripherials *Peripherials, Settings *settings, SettingParams<uint32_t> settingParams) :
+SkipSlotSensorTimeEditor::SkipSlotSensorTimeEditor(Peripherials *Peripherials, Settings *settings, SettingParams<int32_t> settingParams) :
  ControllerSettingEditor(Peripherials, settings, settingParams)
 {
 }
@@ -29,7 +29,8 @@ void SkipSlotSensorTimeEditor::editSetting()
     }
     else if (this->peripherials->downButton.scanForFallingEdge())
     {
-        if(this->settings->skipSlotSensorTime - this->settingParams.currentStep >= this->settingParams.minValue)
+        auto temp = this->settings->skipSlotSensorTime - this->settingParams.currentStep;
+        if(temp >= this->settingParams.minValue && temp > 0)
         {
             this->settings->skipSlotSensorTime -= this->settingParams.currentStep;
             this->printUpdatedValue();
@@ -39,6 +40,7 @@ void SkipSlotSensorTimeEditor::editSetting()
     {
         this->done = true;
     }
+    //Serial.println(this->settings->skipSlotSensorTime - this->settingParams.currentStep);
 }
 
 void SkipSlotSensorTimeEditor::onEnter()

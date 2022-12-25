@@ -1,6 +1,6 @@
 #include "Input.h"
 
-Input::Input(uint_8t pin) : pin(pin)
+Input::Input(uint8_t pin) : pin(pin)
 {
     pinMode(pin, INPUT);
 }

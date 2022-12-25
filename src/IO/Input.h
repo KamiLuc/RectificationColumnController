@@ -6,10 +6,10 @@
 class Input
 {
 private:
-    const uint_8t pin;
+    const uint8_t pin;
 
 public:
-    Input(uint_8t pin);
+    Input(uint8_t pin);
     bool isHigh() const;
     bool isLow() const;
 };

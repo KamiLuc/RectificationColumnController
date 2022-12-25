@@ -8,8 +8,8 @@ struct Settings
 {
     WorkMode workMode = FULL_EQUIPMENT;
     float maxTemperature = 79.0f;
-    uint32_t stabilziationTime = (600000); //10 min
-    uint32_t skipSlotSensorTime = (300000); //5min
+    int32_t stabilziationTime = (600000); //10 min
+    int32_t skipSlotSensorTime = (300000); //5min
 };
 
 #endif 

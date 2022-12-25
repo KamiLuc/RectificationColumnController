@@ -3,12 +3,12 @@
 
 #include "ContollerSettingEditor.h"
 
-class SkipSlotSensorTimeEditor : public ControllerSettingEditor<uint32_t>
+class SkipSlotSensorTimeEditor : public ControllerSettingEditor<int32_t>
 {
 private:
     void printUpdatedValue() override;
 public:
-    SkipSlotSensorTimeEditor(Peripherials *Peripherials, Settings *settings, SettingParams<uint32_t> settingParams);
+    SkipSlotSensorTimeEditor(Peripherials *Peripherials, Settings *settings, SettingParams<int32_t> settingParams);
     void editSetting();
     void onEnter() override;
     ~SkipSlotSensorTimeEditor() = default;
