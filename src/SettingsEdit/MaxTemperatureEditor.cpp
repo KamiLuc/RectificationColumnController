@@ -22,12 +22,12 @@ void MaxTemperatureEditor::editSetting()
     }
     else if (this->peripherials->downButton.scanForFallingEdge())
     {
-        auto temp = this->settings->maxTemperature - this->settingParams.currentStep;
-        if(temp >= this->settingParams.minValue && temp > 0)
+        this->settings->maxTemperature -= this->settingParams.currentStep;
+        if (this->settings->maxTemperature < this->settingParams.minValue)
         {
-            this->settings->maxTemperature -= this->settingParams.currentStep;
-            this->printUpdatedValue();
+            this->settings->maxTemperature = this->settingParams.minValue;
         }
+        this->printUpdatedValue();
     }
     else if(this->peripherials->okButton.scanForFallingEdge())
     {

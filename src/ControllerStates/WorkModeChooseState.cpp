@@ -33,6 +33,11 @@ void WorkModeChooseState::update()
     }
 }
 
+void WorkModeChooseState::onEnter()
+{
+    this->peripherials->lcd.clear();
+}
+
 void WorkModeChooseState::moveIndexUp()
 {
     if (this->currentIndex == 2)

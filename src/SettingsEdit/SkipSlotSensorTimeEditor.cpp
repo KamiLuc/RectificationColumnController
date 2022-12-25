@@ -29,12 +29,12 @@ void SkipSlotSensorTimeEditor::editSetting()
     }
     else if (this->peripherials->downButton.scanForFallingEdge())
     {
-        auto temp = this->settings->skipSlotSensorTime - this->settingParams.currentStep;
-        if(temp >= this->settingParams.minValue && temp > 0)
+        this->settings->skipSlotSensorTime -= this->settingParams.currentStep;
+        if (this->settings->skipSlotSensorTime < this->settingParams.minValue)
         {
-            this->settings->skipSlotSensorTime -= this->settingParams.currentStep;
-            this->printUpdatedValue();
+            this->settings->skipSlotSensorTime = this->settingParams.minValue;
         }
+        this->printUpdatedValue();
     }
     else if(this->peripherials->okButton.scanForFallingEdge())
     {

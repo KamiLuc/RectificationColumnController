@@ -16,9 +16,10 @@ private:
     void setSettingsQueue();
 public:
     SettingsChangeState(Peripherials* peripherials, Settings* settings);
-    bool isDone();
-    void update();
-    virtual ~SettingsChangeState() = default;
+    bool isDone() override;
+    void update() override;
+    void onEnter() override;
+    ~SettingsChangeState() = default;
 };
 
 #endif

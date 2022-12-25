@@ -15,9 +15,10 @@ protected:
 public:
     virtual void update() = 0;
     virtual bool isDone() = 0;
+    virtual void onEnter() = 0;
     State *getNextState() { return this->nextState; }
     State(Peripherials* peripherials, Settings* settings);
-    virtual ~State() {};
+    virtual ~State() = default;
 };
 
 #endif

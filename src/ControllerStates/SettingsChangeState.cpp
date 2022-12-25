@@ -2,9 +2,21 @@
 
 void SettingsChangeState::setSettingsQueue()
 {
+    auto workMode = this->settings->workMode;
     this->currentEditor = &this->stabilizationTimeEditor;
-    this->stabilizationTimeEditor.setNextEditor(&this->maxTemperatureEditor);
-    this->maxTemperatureEditor.setNextEditor(&this->skipSlotSensorTimeEditor);
+    if(workMode == WorkMode::FULL_EQUIPMENT)
+    {
+        this->stabilizationTimeEditor.setNextEditor(&this->maxTemperatureEditor);
+        this->maxTemperatureEditor.setNextEditor(&this->skipSlotSensorTimeEditor);
+    }
+    else if (workMode == WorkMode::SLOT_SENSOR_ONLY)
+    {
+        this->stabilizationTimeEditor.setNextEditor(&this->skipSlotSensorTimeEditor);
+    }
+    else if (workMode == WorkMode::TEMPERATURE_SENSOR_ONLY)
+    {
+        this->stabilizationTimeEditor.setNextEditor(&this->maxTemperatureEditor);
+    }
     this->currentEditor->onEnter();
 }
 
@@ -40,4 +52,9 @@ void SettingsChangeState::update()
     {
         this->currentEditor->editSetting();
     }
+}
+
+void SettingsChangeState::onEnter()
+{
+    this->peripherials->lcd.clear();
 }
