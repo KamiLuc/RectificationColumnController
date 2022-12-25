@@ -29,6 +29,7 @@ void WorkModeChooseState::onEnter()
     this->peripherials->lcd.clear();
     this->peripherials->lcd.setCursor(0,0);
     this->peripherials->lcd.print("Work mode:");
+    this->peripherials->valveRelay.setHigh();
     this->displayNewOption();
 }
 

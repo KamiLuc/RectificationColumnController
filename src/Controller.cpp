@@ -3,6 +3,9 @@
 #include "IO/Input.h"
 #include "IO/Output.h"
 
+//9 slot sensor
+//11 relay
+
 Controller::Controller() :
     peripherials(Button(0), Button(1), Button(2), Button(3), LiquidCrystal(A0, A1, A2, A3, A4, A5), Input(9), Output(11))
 {
