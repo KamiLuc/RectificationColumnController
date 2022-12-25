@@ -16,7 +16,6 @@ private:
     void displayNewOption();
 public:
     WorkModeChooseState(Peripherials* peripherials, Settings* settings);
-    bool isDone() override;
     void update() override;
     void onEnter() override;
     ~WorkModeChooseState() = default;

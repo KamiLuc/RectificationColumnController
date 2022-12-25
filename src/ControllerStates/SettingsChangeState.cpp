@@ -29,11 +29,6 @@ SettingsChangeState::SettingsChangeState(Peripherials *peripherials, Settings *s
     this->setSettingsQueue();
 }
 
-bool SettingsChangeState::isDone()
-{
-    return (this->nextState != nullptr);
-}
-
 void SettingsChangeState::update()
 {
     if (this->currentEditor->isDone())

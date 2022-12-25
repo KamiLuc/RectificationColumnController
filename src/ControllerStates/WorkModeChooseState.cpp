@@ -6,11 +6,6 @@ WorkModeChooseState::WorkModeChooseState(Peripherials* peripherials, Settings* s
 {
 }
 
-bool WorkModeChooseState::isDone()
-{
-    return (this->nextState != nullptr);
-}
-
 void WorkModeChooseState::update()
 {
     if (this->peripherials->downButton.scanForFallingEdge())

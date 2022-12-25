@@ -10,7 +10,6 @@ private:
     unsigned long long lastTemperatureReadTime;
 public:
     DisttilationState(Peripherials* peripherials, Settings* settings);
-    bool isDone() override;
     virtual void update() override;
     void onEnter() override;
     bool canReadTemperature();

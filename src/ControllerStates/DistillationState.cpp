@@ -6,11 +6,6 @@ DisttilationState::DisttilationState(Peripherials *peripherials, Settings *setti
 {
 }
 
-bool DisttilationState::isDone()
-{
-    return (this->nextState != nullptr);
-}
-
 void DisttilationState::onEnter()
 {
     this->peripherials->lcd.clear();
