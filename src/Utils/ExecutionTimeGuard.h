@@ -10,7 +10,7 @@ private:
     unsigned long long guardCreationTime;
 public:
     ExecutionTimeGuard(unsigned long long executionDelayTime);
-    bool canExecute();
+    bool canExecute() const;
 };
 
 #endif 

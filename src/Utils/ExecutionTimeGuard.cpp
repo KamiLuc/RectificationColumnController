@@ -5,8 +5,8 @@ ExecutionTimeGuard::ExecutionTimeGuard(unsigned long long executionDelayTime) : 
     this->guardCreationTime = millis();
 }
 
-bool ExecutionTimeGuard::canExecute()
+bool ExecutionTimeGuard::canExecute() const
 {
     unsigned long long currentTime = millis();
-    return (currentTime - guardCreationTime >= this->executionDelayTime);
+    return (currentTime - this->guardCreationTime >= this->executionDelayTime);
 }

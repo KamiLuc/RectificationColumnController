@@ -18,7 +18,7 @@ public:
     WorkModeChooseState(Peripherials* peripherials, Settings* settings);
     void update() override;
     void onEnter() override;
-    ~WorkModeChooseState() = default;
+    ~WorkModeChooseState();
 };
 
 #endif

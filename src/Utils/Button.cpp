@@ -23,6 +23,7 @@ bool Button::scanForFallingEdge()
 
     if (lastReading == HIGH && newReading == LOW)
     {
+      delay(150);
       result = true;
     }
     else

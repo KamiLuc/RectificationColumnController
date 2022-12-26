@@ -4,6 +4,7 @@
 WorkModeChooseState::WorkModeChooseState(Peripherials* peripherials, Settings* settings) : 
     State(peripherials, settings),  currentIndex(0), possibleOptions({"Temp + Slot", "Temperature only", "Slot only"})
 {
+    Serial.println("WorkModeChooseState Created");
 }
 
 void WorkModeChooseState::update()
@@ -31,6 +32,12 @@ void WorkModeChooseState::onEnter()
     this->peripherials->lcd.print("Work mode:");
     this->peripherials->valveRelay.setHigh();
     this->displayNewOption();
+    Serial.println("WorkModeChooseState Entered");
+}
+
+WorkModeChooseState::~WorkModeChooseState()
+{
+    Serial.println("WorkModeChooseState Destroyed");
 }
 
 void WorkModeChooseState::moveIndexUp()

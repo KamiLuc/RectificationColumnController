@@ -18,7 +18,7 @@ public:
     SettingsChangeState(Peripherials* peripherials, Settings* settings);
     void update() override;
     void onEnter() override;
-    ~SettingsChangeState() = default;
+    ~SettingsChangeState();
 };
 
 #endif

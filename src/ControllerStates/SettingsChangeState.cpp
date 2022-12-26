@@ -27,6 +27,7 @@ SettingsChangeState::SettingsChangeState(Peripherials *peripherials, Settings *s
     skipSlotSensorTimeEditor(peripherials, settings, SettingParams<int32_t>{10000, 300000, 5000, 30000})
 {    
     this->setSettingsQueue();
+    Serial.println("SettingsChangeState Created");
 }
 
 void SettingsChangeState::update()
@@ -36,7 +37,7 @@ void SettingsChangeState::update()
         this->currentEditor = this->currentEditor->getNextEditor();
         if (this->currentEditor == nullptr)
         {
-            this->nextState = new DisttilationState(this->peripherials, this->settings);
+            this->nextState = new DisttilationState(this->peripherials, this->settings, 10000);
             return;
         }
         else
@@ -52,6 +53,12 @@ void SettingsChangeState::update()
 
 void SettingsChangeState::onEnter()
 {
+    Serial.println("SettingsChangeState Entered");
+}
+
+SettingsChangeState::~SettingsChangeState()
+{
+    Serial.println("SettingsChangeState Destroyed");
 }
 
 void DisttilationState::update()
@@ -63,6 +70,15 @@ void DisttilationState::update()
         {
             //do stabilizacji
         } 
+    }
+
+    if (this->peripherials->slotSensor.isHigh() && this->skipSlotSensorTimeGuard.canExecute())
+    {
+        this->peripherials->valveRelay.setHigh();
+    }
+    else 
+    {
+        this->peripherials->valveRelay.setLow();
     }
 
     if (this->peripherials->slotSensor.isHigh())
