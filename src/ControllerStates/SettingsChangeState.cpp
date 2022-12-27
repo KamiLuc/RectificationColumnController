@@ -1,6 +1,7 @@
 #include "SettingsChangeState.h"
 #include "DistillationState.h"
 #include "StabilizationState.h"
+#include "StabilizationAfterSlotSensorReactionState.h"
 
 void SettingsChangeState::setSettingsQueue()
 {
@@ -83,7 +84,7 @@ void DisttilationState::update()
     {
         if (this->peripherials->slotSensor.isHigh() && this->skipSlotSensorTimeGuard.canExecute())
         {
-            this->nextState = new StabilizationState(this->peripherials, this->settings);
+            this->nextState = new StabilizationAfterSlotSensorReactionState(this->peripherials, this->settings);
         }
     }
 
@@ -96,6 +97,20 @@ void DisttilationState::update()
 void StabilizationState::update()
 {
     if (this->peripherials->menuButton.scanForFallingEdge())
+    {
+        this->nextState = new SettingsChangeState(this->peripherials, this->settings);
+    }
+    else if (this->endOfStabilizationTimeGuard.canExecute())
+    {
+        this->nextState = new DisttilationState(this->peripherials, this->settings, 0);
+    }
+
+    this->printStabilizationProgress();
+}
+
+void StabilizationAfterSlotSensorReactionState::update()
+{
+     if (this->peripherials->menuButton.scanForFallingEdge())
     {
         this->nextState = new SettingsChangeState(this->peripherials, this->settings);
     }
