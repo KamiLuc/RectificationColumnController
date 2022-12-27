@@ -24,9 +24,9 @@ void SettingsChangeState::setSettingsQueue()
 }
 
 SettingsChangeState::SettingsChangeState(Peripherials *peripherials, Settings *settings) : State(peripherials, settings),
-    maxTemperatureEditor(peripherials, settings, SettingParams<float>{50.0f, 90.0f, 0.1f, 1.0f}),
-    stabilizationTimeEditor(peripherials, settings, SettingParams<int32_t>{1200, 7200000, 60000, 600000}), //120000
-    skipSlotSensorTimeEditor(peripherials, settings, SettingParams<int32_t>{10000, 300000, 5000, 30000})
+    maxTemperatureEditor(peripherials, settings, SettingParams<float>{0.0f, 90.0f, 0.1f, 1.0f}), //50.0f
+    stabilizationTimeEditor(peripherials, settings, SettingParams<int32_t>{1000, 7200000, 60000, 600000}), //120000
+    skipSlotSensorTimeEditor(peripherials, settings, SettingParams<int32_t>{1000, 300000, 5000, 30000}) //10000
 {    
     this->setSettingsQueue();
     Serial.println("SettingsChangeState Created");
@@ -72,12 +72,17 @@ void DisttilationState::update()
     {
         if (canReadTemperature())
         {
-            auto temp = 0;
-            if (temp < this->settings->maxTemperature)
+            auto temperature = this->getTemperature();
+            if (temperature > this->settings->maxTemperature)
             {
-            //do stabilizacji
+                this->nextState = new StabilizationState(this->peripherials, this->settings);
+                return;
+            }
+            else
+            {
+                this->displayTemperature();
             } 
-    }
+        }
     }
 
     if (this->settings->workMode == WorkMode::FULL_EQUIPMENT || this->settings->workMode == WorkMode::SLOT_SENSOR_ONLY)
@@ -85,12 +90,14 @@ void DisttilationState::update()
         if (this->peripherials->slotSensor.isHigh() && this->skipSlotSensorTimeGuard.canExecute())
         {
             this->nextState = new StabilizationAfterSlotSensorReactionState(this->peripherials, this->settings);
+            return;
         }
     }
 
     if (this->peripherials->menuButton.scanForFallingEdge())
     {
         this->nextState = new SettingsChangeState(this->peripherials, this->settings);
+        return;
     }
 }
 
@@ -99,10 +106,22 @@ void StabilizationState::update()
     if (this->peripherials->menuButton.scanForFallingEdge())
     {
         this->nextState = new SettingsChangeState(this->peripherials, this->settings);
+        return;
     }
     else if (this->endOfStabilizationTimeGuard.canExecute())
     {
-        this->nextState = new DisttilationState(this->peripherials, this->settings, 0);
+        DisttilationState* ds = new DisttilationState(this->peripherials, this->settings, 0);
+        if (ds->getTemperature() > this->settings->maxTemperature)
+        {
+            delete ds;
+            this->nextState = new StabilizationState(this->peripherials, this->settings);
+            return;
+        }
+        else
+        {
+            this->nextState = new DisttilationState(this->peripherials, this->settings, 0);
+            return;
+        }
     }
 
     this->printStabilizationProgress();
@@ -113,10 +132,12 @@ void StabilizationAfterSlotSensorReactionState::update()
      if (this->peripherials->menuButton.scanForFallingEdge())
     {
         this->nextState = new SettingsChangeState(this->peripherials, this->settings);
+        return;
     }
     else if (this->endOfStabilizationTimeGuard.canExecute())
     {
         this->nextState = new DisttilationState(this->peripherials, this->settings, this->settings->skipSlotSensorTime);
+        return;
     }
 
     this->printStabilizationProgress();

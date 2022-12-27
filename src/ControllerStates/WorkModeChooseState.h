@@ -14,6 +14,7 @@ private:
     void moveIndexDown();
     void chooseCurrentOption();
     void displayNewOption();
+    void setUpDS18B20();
 public:
     WorkModeChooseState(Peripherials* peripherials, Settings* settings);
     void update() override;

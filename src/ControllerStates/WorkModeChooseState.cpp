@@ -69,10 +69,12 @@ void WorkModeChooseState::chooseCurrentOption()
     if(this->currentIndex == 0)
     {
         this->settings->workMode = WorkMode::FULL_EQUIPMENT;
+        this->setUpDS18B20();
     }
     else if(this->currentIndex == 1)
     {
         this->settings->workMode = WorkMode::TEMPERATURE_SENSOR_ONLY;
+        this->setUpDS18B20();
     }
     else
     {
@@ -91,4 +93,17 @@ void WorkModeChooseState::displayNewOption()
     {
         this->peripherials->lcd.print(" ");
     }
+}
+
+void WorkModeChooseState::setUpDS18B20()
+{
+    if (this->peripherials->ds18b20.begin() == false)
+    {
+        Serial.println("ERROR: No device found");
+        while (!this->peripherials->ds18b20.begin()); 
+    }
+
+    this->peripherials->ds18b20.setResolution(12);
+    this->peripherials->ds18b20.setConfig(DS18B20_CRC); 
+    this->peripherials->ds18b20.requestTemperatures();
 }

@@ -10,11 +10,13 @@ private:
     unsigned long long temperatureReadInterval;
     unsigned long long lastTemperatureReadTime;
     ExecutionTimeGuard skipSlotSensorTimeGuard;
+    void displayTemperature();
 public:
     DisttilationState(Peripherials* peripherials, Settings* settings, unsigned long long slotSensorSkipTime);
     virtual void update() override;
     void onEnter() override;
     bool canReadTemperature();
+    float getTemperature();
     ~DisttilationState();
 };
 

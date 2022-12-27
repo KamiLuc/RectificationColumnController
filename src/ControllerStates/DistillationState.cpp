@@ -1,8 +1,22 @@
 #include "DistillationState.h"
 #include "SettingsChangeState.h"
 
-DisttilationState::DisttilationState(Peripherials *peripherials, Settings *settings, unsigned long long slotSensorSkipTime) :
- State(peripherials, settings), temperatureReadInterval(1000), lastTemperatureReadTime(0), skipSlotSensorTimeGuard(slotSensorSkipTime)
+void DisttilationState::displayTemperature()
+{
+    this->peripherials->lcd.setCursor(10,1);
+    this->peripherials->lcd.print(this->getTemperature());
+    this->peripherials->lcd.print("C");
+}
+
+float DisttilationState::getTemperature()
+{
+    this->peripherials->ds18b20.requestTemperatures();
+    float t = this->peripherials->ds18b20.getTempC();
+    return t;
+}
+
+DisttilationState::DisttilationState(Peripherials *peripherials, Settings *settings, unsigned long long slotSensorSkipTime) : State(peripherials, settings),
+ temperatureReadInterval(1000), lastTemperatureReadTime(0), skipSlotSensorTimeGuard(slotSensorSkipTime)
 {
     Serial.println("DistillationState Created");
 }

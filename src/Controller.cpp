@@ -7,7 +7,7 @@
 //11 relay
 
 Controller::Controller() :
-    peripherials(Button(0), Button(1), Button(2), Button(3), LiquidCrystal(A0, A1, A2, A3, A4, A5), Input(9), Output(11))
+    peripherials(Button(0), Button(1), Button(2), Button(3), LiquidCrystal(A0, A1, A2, A3, A4, A5), Input(9), Output(11), 10)
 {
     peripherials.lcd.setCursor(0,0);
     peripherials.lcd.begin(16,2);
