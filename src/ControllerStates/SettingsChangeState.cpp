@@ -1,5 +1,6 @@
 #include "SettingsChangeState.h"
 #include "DistillationState.h"
+#include "StabilizationState.h"
 
 void SettingsChangeState::setSettingsQueue()
 {
@@ -23,7 +24,7 @@ void SettingsChangeState::setSettingsQueue()
 
 SettingsChangeState::SettingsChangeState(Peripherials *peripherials, Settings *settings) : State(peripherials, settings),
     maxTemperatureEditor(peripherials, settings, SettingParams<float>{50.0f, 90.0f, 0.1f, 1.0f}),
-    stabilizationTimeEditor(peripherials, settings, SettingParams<int32_t>{120000, 7200000, 60000, 600000}),
+    stabilizationTimeEditor(peripherials, settings, SettingParams<int32_t>{1200, 7200000, 60000, 600000}), //120000
     skipSlotSensorTimeEditor(peripherials, settings, SettingParams<int32_t>{10000, 300000, 5000, 30000})
 {    
     this->setSettingsQueue();
@@ -37,7 +38,7 @@ void SettingsChangeState::update()
         this->currentEditor = this->currentEditor->getNextEditor();
         if (this->currentEditor == nullptr)
         {
-            this->nextState = new DisttilationState(this->peripherials, this->settings, 10000);
+            this->nextState = new DisttilationState(this->peripherials, this->settings, 0);
             return;
         }
         else
@@ -53,6 +54,9 @@ void SettingsChangeState::update()
 
 void SettingsChangeState::onEnter()
 {
+    this->peripherials->lcd.clear();
+    this->currentEditor->onEnter();
+    this->peripherials->valveRelay.setHigh();
     Serial.println("SettingsChangeState Entered");
 }
 
@@ -63,31 +67,43 @@ SettingsChangeState::~SettingsChangeState()
 
 void DisttilationState::update()
 {
-    if (canReadTemperature())
+    if (this->settings->workMode == WorkMode::FULL_EQUIPMENT || this->settings->workMode == WorkMode::TEMPERATURE_SENSOR_ONLY)
     {
-        auto temp = 0;
-        if (temp < this->settings->maxTemperature)
+        if (canReadTemperature())
         {
+            auto temp = 0;
+            if (temp < this->settings->maxTemperature)
+            {
             //do stabilizacji
-        } 
+            } 
+    }
     }
 
-    if (this->peripherials->slotSensor.isHigh() && this->skipSlotSensorTimeGuard.canExecute())
+    if (this->settings->workMode == WorkMode::FULL_EQUIPMENT || this->settings->workMode == WorkMode::SLOT_SENSOR_ONLY)
     {
-        this->peripherials->valveRelay.setHigh();
-    }
-    else 
-    {
-        this->peripherials->valveRelay.setLow();
+        if (this->peripherials->slotSensor.isHigh() && this->skipSlotSensorTimeGuard.canExecute())
+        {
+            this->nextState = new StabilizationState(this->peripherials, this->settings);
+        }
     }
 
-    if (this->peripherials->slotSensor.isHigh())
+    if (this->peripherials->menuButton.scanForFallingEdge())
     {
-        //stabilizacja
-    }
-    else if (this->peripherials->menuButton.scanForFallingEdge())
-    {
-        this->peripherials->valveRelay.setHigh();
         this->nextState = new SettingsChangeState(this->peripherials, this->settings);
     }
 }
+
+void StabilizationState::update()
+{
+    if (this->peripherials->menuButton.scanForFallingEdge())
+    {
+        this->nextState = new SettingsChangeState(this->peripherials, this->settings);
+    }
+    else if (this->endOfStabilizationTimeGuard.canExecute())
+    {
+        this->nextState = new DisttilationState(this->peripherials, this->settings, this->settings->skipSlotSensorTime);
+    }
+
+    this->printStabilizationProgress();
+}
+

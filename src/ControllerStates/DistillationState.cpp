@@ -14,6 +14,12 @@ void DisttilationState::onEnter()
     this->peripherials->lcd.print("Distillation");
     this->peripherials->valveRelay.setLow();
     Serial.println("DistillationState Entered");
+    
+    if(this->settings->workMode == WorkMode::FULL_EQUIPMENT || this->settings->workMode == WorkMode::TEMPERATURE_SENSOR_ONLY)
+    {
+        this->peripherials->lcd.setCursor(0,1);
+        this->peripherials->lcd.print("Tem-ture:");
+    }
 }
 
 bool DisttilationState::canReadTemperature()

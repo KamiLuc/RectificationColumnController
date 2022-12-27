@@ -23,10 +23,10 @@ bool Controller::isDone() const
 
 void Controller::update()
 {
-    this->currentState->update();
     if (this->currentState->isDone())
     {
         auto tempPtr = this->currentState->getNextState();
+        delay(100);
         delete this->currentState;
         this->currentState = tempPtr; 
         this->currentState->onEnter();

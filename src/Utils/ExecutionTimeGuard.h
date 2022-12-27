@@ -10,6 +10,8 @@ private:
     unsigned long long guardCreationTime;
 public:
     ExecutionTimeGuard(unsigned long long executionDelayTime);
+    unsigned long long getTimeLeft() const;
+    double getTimeLeftAsPercentage() const;
     bool canExecute() const;
 };
 
